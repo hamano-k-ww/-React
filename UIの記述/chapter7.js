@@ -27,7 +27,7 @@ import {getImageUrl} from './utils.js';
 
 export default function List(){
     //1.people に対して filter() を呼び出し、person.profession === 'chemist' を使ってフィルタした、職業が “chemist” である人物のみの新しい配列を作成します。
-    const chemists = people.filter(people =>
+    const chemists = people.filter(person =>
         person.profession === 'chemist'
     );
     //2.次に chemists に対して map を適用します。
@@ -165,3 +165,73 @@ export function getImageUrl(person) {
 //Keyのルール
 // キーは兄弟間で一意でなければなりません。ただし、異なる配列に対応する JSX ノードには同じキーを使用することができます。
 // キーは変更してはいけません。さもないと key の目的が台無しになります。レンダーの最中に key を生成してはいけません。
+
+
+//少し応用
+import { recipes } from './data.js';
+
+export default function RecipeList() {
+  return (
+    <div>
+      <h1>Recipes</h1>
+      {recipes.map(recipe =>
+        <div key={recipe.id}>
+          <h2>{recipe.name}</h2>
+          <ul>
+            {recipe.ingredients.map(ingredient =>
+              <li key={ingredient}>
+                {ingredient}
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+////というコードを以下のようにさらに分かりやすくすることもできます。
+import { recipes } from './data.js';
+
+function Recipe({ id, name, ingredients }) {
+  return (
+    <div>
+      <h2>{name}</h2>
+      <ul>
+        {ingredients.map(ingredient =>
+          <li key={ingredient}>
+            {ingredient}
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+}
+
+import { recipes } from './data.js';
+
+function Recipe({ id, name, ingredients }) {
+  return (
+    <div>
+      <h2>{name}</h2>
+      <ul>
+        {ingredients.map(ingredient =>
+          <li key={ingredient}>
+            {ingredient}
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+}
+
+export default function RecipeList() {
+  return (
+    <div>
+      <h1>Recipes</h1>
+      {recipes.map(recipe =>
+        <Recipe {...recipe} key={recipe.id} />
+      )}
+    </div>
+  );
+}
